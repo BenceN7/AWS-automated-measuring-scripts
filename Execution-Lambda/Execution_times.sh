@@ -9,7 +9,7 @@ read user_input
 for i in {1..100}
 do
 
-date +%s > date.txt && aws lambda invoke --function-name $user_input --cli-binary-format raw-in-base64-out --payload fileb://i>
+date +%s > date.txt && aws lambda invoke --function-name $user_input --cli-binary-format raw-in-base64-out --payload fileb://input.json output.json
 date=$(cat date.txt)
 
 execution_time=$(cat output.json | jq -r '.execution_time')
