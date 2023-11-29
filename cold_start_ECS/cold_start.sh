@@ -33,7 +33,7 @@ done
 date +%s > date.txt
 
 Restart_time=$(cat date.txt)
-aws dynamodb update-item --region us-east-1 --table-name ECSTest --key '{"Started": {"N": "0"}}'  --update-expression "SET #Ts$
+aws dynamodb update-item --region us-east-1 --table-name ECSTest --key '{"Started": {"N": "0"}}'  --update-expression "SET #Ts = :newtime"  --expression-attribute-values '{":newtime":{"N":"0"}}' --expression-attribute-names '{"#Ts":"TimeStamp"}'
 
 difference=$(echo "$Restart_time - $Signal_time" | bc)
 
