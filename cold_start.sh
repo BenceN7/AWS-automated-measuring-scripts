@@ -19,7 +19,24 @@ date +%s > date.txt && aws ecs stop-task --cluster $ARN --task "$task" --region 
 Signal_time=$(cat date.txt)
 
 n="0"
-#echo "$n"
+
 while [ "$n" == "0" ]
 
 do
+
+aws dynamodb get-item --region us-east-1 --table-name ECSTest --key '{"Started": {"N": "0"}}' > output.json
+
+n=$(cat output.json | jq '.Item.TimeStamp.N|tonumber')
+
+done
+
+date +%s > date.txt
+
+Restart_time=$(cat date.txt)
+aws dynamodb update-item --region us-east-1 --table-name ECSTest --key '{"Started": {"N": "0"}}'  --update-expression "SET #Ts$
+
+difference=$(echo "$Restart_time - $Signal_time" | bc)
+
+echo "$difference" >> cold_start.txt
+
+done
